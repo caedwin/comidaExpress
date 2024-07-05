@@ -142,7 +142,7 @@ class _PantallaMenuState extends State<PantallaMenu> {
                                children: <Widget>[
                                  Icon(
                                    Icons.whatshot_rounded, // Cambia el ícono aquí
-                                   color: Colors.amberAccent, // Cambia el color del ícono
+                                   color: Colors.deepOrangeAccent, // Cambia el color del ícono
                                    size: 16, // Tamaño del ícono
                                  )
                                ],
@@ -243,7 +243,7 @@ class _PantallaMenuState extends State<PantallaMenu> {
                                children: <Widget>[
                                  Icon(
                                    Icons.whatshot_rounded, // Cambia el ícono aquí
-                                   color: Colors.amberAccent, // Cambia el color del ícono
+                                   color: Colors.deepOrangeAccent, // Cambia el color del ícono
                                    size: 16, // Tamaño del ícono
                                  )
                                ],
@@ -344,7 +344,7 @@ class _PantallaMenuState extends State<PantallaMenu> {
                                children: <Widget>[
                                  Icon(
                                    Icons.whatshot_rounded, // Cambia el ícono aquí
-                                   color: Colors.amberAccent, // Cambia el color del ícono
+                                   color: Colors.deepOrangeAccent, // Cambia el color del ícono
                                    size: 16, // Tamaño del ícono
                                  )
                                ],
