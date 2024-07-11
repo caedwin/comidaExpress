@@ -1,13 +1,13 @@
-
+// ignore_for_file: file_names
 // creamos la clase de los registros
 class Item {
-  String id;
-  String nombre;
-  double precio;
-  String unidad;
-  String imagen;
-  int cantidad;
-  double delivery;
+  final String id;
+  final String nombre;
+  final double precio;
+  final String unidad;
+  final String imagen;
+  final int cantidad;
+  final double delivery;
 
   // Constructor principal con parámetros nombrados
   Item({

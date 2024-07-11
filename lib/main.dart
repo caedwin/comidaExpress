@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/Controller/carrito.dart';
 import 'package:restaurant/Controller/perfil_user.dart';
-import 'package:restaurant/view/pantallaMenu.dart';
-//import 'view/pantallaInicio.dart';
+import 'package:restaurant/widgets/pantallaMenu.dart';
+import 'widgets/pantallaLogin.dart';
+import 'package:restaurant/widgets/pantallaInicio.dart';
 
 // nos traemos la libreria de la funcion provider
 // para ello entramos en la web y buscamos https://pub.dev/packages/provider/install
@@ -15,7 +16,7 @@ void main() => runApp(
       ChangeNotifierProvider(create: (context) => Carrito()),
       ChangeNotifierProvider(create: (context) => PerfilUser()),
     ],
-    child: MyApp(),
+    child: const MyApp(),
   ),
 );
 
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
       ),
       // home: Pantallainicio() // pantalla inicio
       home: PantallaMenu(),
+      // home: const loginUser(),
     );
   }
 }

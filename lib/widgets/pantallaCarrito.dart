@@ -1,4 +1,6 @@
 // import 'dart:math';
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/Controller/carrito.dart';
@@ -19,10 +21,10 @@ class _PantallaCarritoState extends State<PantallaCarrito> {
       return Scaffold(
         backgroundColor: Colors.amberAccent, // color del tema
         appBar: AppBar(
-          title: Text("PEDIDOS"),
+          title: const Text("PEDIDOS"),
           elevation: 0,
         ),
-        body: carrito.itemCount == 0 ? Center(
+        body: carrito.itemCount == 0 ? const Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -35,7 +37,7 @@ class _PantallaCarritoState extends State<PantallaCarrito> {
           SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(15),
                 child: Align(
                   alignment: Alignment.topLeft,
@@ -45,29 +47,34 @@ class _PantallaCarritoState extends State<PantallaCarrito> {
               ),
               for (var item in carrito.items.values)
                 Card( // creamos la tarjeta del pedido
-                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),//controlamos los margenes de las tarjetas
+                  margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),//controlamos los margenes de las tarjetas
                   child: Row(
                     mainAxisSize: MainAxisSize.min, //controlamos el desbordamiento del scroll
                     children: <Widget>[ // agregamos
-                      Image.asset("/imagenes/" + item.imagen, width: 100),
+                      Image.asset("/imagenes/${item.imagen}", width: 100),
                       Expanded(
                         child: Container( // contenido de la tarjeta de compra
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           height: 100,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                item.cantidad.toString() + "x  " + item.nombre,
-                                style: TextStyle(fontWeight: FontWeight.w300, color: Colors.red),
+                                "${item.cantidad}x  ${item.nombre}",
+                                style: const TextStyle(fontWeight: FontWeight.w300, color: Colors.red),
                               ),
                               Row(// aumentamos y disminuimos la cantidad del producto
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Container(
+                                    width: 50,
+                                    height: 30,
+                                    decoration: const BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.all(Radius.circular(30))),
                                     child: IconButton(
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.remove,
                                         size: 13,
                                         color: Colors.white,
@@ -78,21 +85,21 @@ class _PantallaCarritoState extends State<PantallaCarrito> {
                                         });
                                       },
                                     ),
-                                    width: 50,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.all(Radius.circular(30))),
                                   ),
-                                  Container(
+                                  SizedBox(
                                     width: 40,
                                     child: Center(
                                       child: Text(item.cantidad.toString()),
                                     ),
                                   ),
                                   Container(
+                                    width: 50,
+                                    height: 30,
+                                    decoration: const BoxDecoration(
+                                        color: Colors.green,
+                                        borderRadius: BorderRadius.all(Radius.circular(30))),
                                     child: IconButton(
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.add,
                                         size: 13,
                                         color: Colors.white,
@@ -103,11 +110,6 @@ class _PantallaCarritoState extends State<PantallaCarrito> {
                                         });
                                       },
                                     ),
-                                    width: 50,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                        color: Colors.green,
-                                        borderRadius: BorderRadius.all(Radius.circular(30))),
                                   )
                                 ],
                               )
@@ -118,24 +120,23 @@ class _PantallaCarritoState extends State<PantallaCarrito> {
                       Container( // controlamos el monto del producto
                         height: 100,
                         width: 70,
-                        decoration: BoxDecoration(color: Colors.white60),
+                        decoration: const BoxDecoration(color: Colors.white60),
                         child: Center(
                           child: Text(
-                            "€ " + (item.precio * item.cantidad).toString(),
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            "€ ${item.precio * item.cantidad}",
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
                       )
                     ],
                   ),
                 ),
-              Row( // controlamos el resumen del pago
-                children: [
-                  Text("______________________________"),
-                ],
+              const Divider(
+                color: Colors.black38,
+                height: 20.0,
               ),
 
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 0),
                 child: Align(
                   alignment: Alignment.topLeft,
@@ -146,47 +147,47 @@ class _PantallaCarritoState extends State<PantallaCarrito> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Sub-Total:"),
-                    Text("€ " + carrito.subTotal.toStringAsFixed(2)),
+                    const Text("Sub-Total:"),
+                    Text("€ ${carrito.subTotal.toStringAsFixed(2)}"),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Impuesto:"),
-                    Text("€ " + carrito.impuesto.toStringAsFixed(2)),
+                    const Text("Impuesto:"),
+                    Text("€ ${carrito.impuesto.toStringAsFixed(2)}"),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Delivery:"),
-                    Text(carrito.delivery != 0 ? "€ " + carrito.delivery.toStringAsFixed(2) : "Gratis"),
+                    const Text("Delivery:"),
+                    Text(carrito.delivery != 0 ? "€ ${carrito.delivery.toStringAsFixed(2)}" : "Gratis"),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Total:",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                     Text(
-                      "€ " + carrito.montoTotal.toStringAsFixed(2),
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      "€ ${carrito.montoTotal.toStringAsFixed(2)}",
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ],
                 ),
@@ -215,19 +216,23 @@ class _PantallaCarritoState extends State<PantallaCarrito> {
             String mensaje = Uri.encodeComponent(pedido);
             String url = "https://wa.me/$celular?text=$mensaje";
 
+            // ignore: deprecated_member_use
             if (await canLaunch(url)) {
+              // ignore: deprecated_member_use
               await launch(url);
+              // ignore: use_build_context_synchronously
               ScaffoldMessenger.of(context).showSnackBar(// cargamos mensaje al usuario
-                  SnackBar(
+                  const SnackBar(
                       content: Text("Tu pedido fuen enviado con éxito!!", textAlign: TextAlign.center,)
                   )
               );
             } else { //controlamos si existe un error al enviar el mensaje.
+              // ignore: use_build_context_synchronously
               _showErrorDialog(context, "ERROR: No se pudo enviar el pedido, contacte al administrador de la app");
             }
           },
           backgroundColor: Colors.green,
-          child: Icon(
+          child: const Icon(
             Icons.send,
             color: Colors.white,
           ),
@@ -241,11 +246,11 @@ class _PantallaCarritoState extends State<PantallaCarrito> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error'),
+          title: const Text('Error'),
           content: Text(message),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

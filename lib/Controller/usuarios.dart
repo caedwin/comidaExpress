@@ -98,7 +98,7 @@ class Usuario extends ChangeNotifier{
   }
 
   final usuario = [
-    new Usuario(id: "1", nombre: 'edwin camacho', email: 'edwin.a.camacho@gmail.com', username: 'ecamacho', slug: 'edwincamacho', password: '1234', activo: true, telefono: '11223546879', direccion: 'Av.E', cp: '1010', pais: 'Venezuela', ciudad: 'Caracas', provincia: 'El paraiso', localidad: 'El pinal', imagen: ''),
+    Usuario(id: "1", nombre: 'edwin camacho', email: 'edwin.a.camacho@gmail.com', username: 'ecamacho', slug: 'edwincamacho', password: '1234', activo: true, telefono: '11223546879', direccion: 'Av.E', cp: '1010', pais: 'Venezuela', ciudad: 'Caracas', provincia: 'El paraiso', localidad: 'El pinal', imagen: ''),
   ];
 
 }

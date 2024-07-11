@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/Controller/carrito.dart';
 import 'package:restaurant/Controller/productos.dart';
-import 'package:restaurant/view/pantallaCarrito.dart';
-import 'package:restaurant/view/pantallaInicio.dart';
-import 'package:restaurant/view/pantallaPerfilUsuario.dart';
+import 'package:restaurant/widgets/pantallaCarrito.dart';
+import 'package:restaurant/widgets/pantallaInicio.dart';
+import 'package:restaurant/widgets/pantallaPerfilUsuario.dart';
 
 
 class PantallaMenu extends StatefulWidget {
+  const PantallaMenu({super.key});
+
   @override
   State<PantallaMenu> createState() => _PantallaMenuState();
 }
 
 //Encabezado de la página
 class _PantallaMenuState extends State<PantallaMenu> {
-  final GlobalKey<ScaffoldState> _globalKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     final platosEnPromocion = platos.where((plato) => plato.promocion).toList();
@@ -28,29 +30,29 @@ class _PantallaMenuState extends State<PantallaMenu> {
          backgroundColor: Colors.amberAccent,
          // pintamos el body de la pagina
          appBar: AppBar( // creamos las pestañas de navegacion
-           title: Text("Comida Express", style: TextStyle(
+           title: const Text("Comida Express", style: TextStyle(
                fontWeight: FontWeight.bold, color: Colors.blue)),
            // Titulo de la empresa
            elevation: 0,
-           bottom: TabBar(
+           bottom: const TabBar(
              indicatorColor: Colors.deepOrange,
              // marcamos el nombre de la pestaña
              indicatorSize: TabBarIndicatorSize.label,
              // ajustamos el marcador al largo de la palabra
              tabs: <Widget>[// Nombre de las PESTAÑAS
-               new Tab(
+               Tab(
                  child: Padding( // creamos el nombre en la pestaña
                    padding: EdgeInsets.only(left: 5, right: 5),
                    child: Text("Menú",style: TextStyle(fontSize: 12),),
                  ),
                ),
-               new Tab(
+               Tab(
                  child: Padding(
                    padding: EdgeInsets.only(left: 5, right: 5),
                    child: Text("Promociones",style: TextStyle(fontSize: 12),),
                  ),
                ),
-               new Tab(
+               Tab(
                  child: Padding(
                    padding: EdgeInsets.only(left: 5, right: 5),
                    child: Text("Recomendado",style: TextStyle(fontSize: 12),),
@@ -59,36 +61,36 @@ class _PantallaMenuState extends State<PantallaMenu> {
              ],
            ),
            actions: <Widget>[ // Creamos el boton del carrto
-             new Stack(
+             Stack(
                children: <Widget>[
                  IconButton( // boton carrito
-                     icon: Icon(Icons.shopping_cart), // icono
-                     padding: EdgeInsets.only(right: 18, top: 10),
+                     icon: const Icon(Icons.shopping_cart), // icono
+                     padding: const EdgeInsets.only(right: 18, top: 10),
                      onPressed: () {
-                       carrito.itemCount !=0 ? Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext)=>PantallaCarrito())):
+                       carrito.itemCount !=0 ? Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext)=>const PantallaCarrito())):
                        ScaffoldMessenger.of(context).showSnackBar(
-                           SnackBar(
+                           const SnackBar(
                                content: Text("Tu carrito está vacío 🥺!!", textAlign: TextAlign.center,)
                            )
                        );
                      }
                  ),
-                 new Positioned( //Posicion del globito y el color
+                 Positioned( //Posicion del globito y el color
                    top: 8,
                    right: 8,
                    child: Container( //
-                     padding: EdgeInsets.all(2),
-                     decoration: new BoxDecoration(
+                     padding: const EdgeInsets.all(2),
+                     decoration: BoxDecoration(
                          color: Colors.red,
                          borderRadius: BorderRadius.circular(4)),
-                     constraints: BoxConstraints(
+                     constraints: const BoxConstraints(
                          minWidth: 14,
                          minHeight: 14
                      ),
                      child: Text(
                        carrito.itemCount.toString(), // creamos el contador
                        textAlign: TextAlign.center,
-                       style: TextStyle(
+                       style: const TextStyle(
                            color: Colors.white,
                            fontSize: 9
                        ),),
@@ -98,12 +100,12 @@ class _PantallaMenuState extends State<PantallaMenu> {
              )
            ],
          ),
-         drawer: menuLateral(),
+         drawer: const menuLateral(),
          body: TabBarView(
            children: <Widget>[
              // Creamos las tarjetas en cada apartado de las pestañas
                Container( // Pestaña MENU
-                 padding: EdgeInsets.all(15),
+                 padding: const EdgeInsets.all(15),
                  child: GridView.builder( // creamos la tarjeta con el metodo Grid
                    itemCount: platos.length,
                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -114,11 +116,11 @@ class _PantallaMenuState extends State<PantallaMenu> {
                    ),
                    itemBuilder: (context, index) {
                      return Container( // Renderizamos las tarjetas
-                       padding: EdgeInsets.all(5),
+                       padding: const EdgeInsets.all(5),
                        decoration: BoxDecoration( // le damos estilo a las tarjetas
                          color: Colors.white,
                          borderRadius: BorderRadius.circular(6), // redondeamos bordes
-                         boxShadow: [
+                         boxShadow: const [
                            BoxShadow( // le damos sombra a la tarjeta
                              color: Color(0x33000000),
                              blurRadius: 30,
@@ -131,14 +133,14 @@ class _PantallaMenuState extends State<PantallaMenu> {
                          children: <Widget>[
                            Expanded(
                              child: Image.asset(
-                               "/imagenes/" + platos[index].imagen,
+                               "/imagenes/${platos[index].imagen}",
                                fit: BoxFit.cover,
                                scale: 1,
                              ),
                            ),
-                           SizedBox(height: 8),
+                           const SizedBox(height: 8),
                            if(platos[index].top)
-                             Row(
+                             const Row(
                                children: <Widget>[
                                  Icon(
                                    Icons.whatshot_rounded, // Cambia el ícono aquí
@@ -147,24 +149,24 @@ class _PantallaMenuState extends State<PantallaMenu> {
                                  )
                                ],
                              ),
-                           SizedBox(width: 5), // Espacio entre el ícono y el texto
+                           const SizedBox(width: 5), // Espacio entre el ícono y el texto
                            Text(
                              platos[index].nombre,
-                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12,),
+                             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12,),
                            ),
                            if(platos[index].promocion)
-                             Align(
+                             const Align(
                                alignment: Alignment(0.9,0),
                                child: Text("Promoción",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red,fontSize: 9),
                                ),
                              ),
                            Padding(
-                             padding: EdgeInsets.only(top: 5),
-                             child: Text("€ " + platos[index].precio.toString(), style: TextStyle(fontSize: 12),),
+                             padding: const EdgeInsets.only(top: 5),
+                             child: Text("€ ${platos[index].precio}", style: const TextStyle(fontSize: 12),),
                            ),
                            Padding(
-                               padding: EdgeInsets.only(top: 5, bottom: 10),
-                                child: Text(platos[index].delivery != 0 ? "Delivery: €${platos[index].delivery}" : "Envío Gratis", style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold,color: Colors.red),),
+                               padding: const EdgeInsets.only(top: 5, bottom: 10),
+                                child: Text(platos[index].delivery != 0 ? "Delivery: €${platos[index].delivery}" : "Envío Gratis", style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold,color: Colors.red),),
                            ),
 
                            Center(
@@ -182,7 +184,7 @@ class _PantallaMenuState extends State<PantallaMenu> {
                                  );
                                });
                              },
-                             child: Row(
+                             child: const Row(
                                 mainAxisSize: MainAxisSize.min, // Ajusta el tamaño de la fila al contenido
                                 children: [
                                     Icon(
@@ -203,7 +205,7 @@ class _PantallaMenuState extends State<PantallaMenu> {
                  ),
                ),
                Container( // INICIO Prestaña PROMOCIONES
-                 padding: EdgeInsets.all(15),
+                 padding: const EdgeInsets.all(15),
                  child: GridView.builder( // creamos la tarjeta con el metodo Grid
                    itemCount: platosEnPromocion.length,
                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -215,11 +217,11 @@ class _PantallaMenuState extends State<PantallaMenu> {
                    itemBuilder: (context, index) {
                      final platos = platosEnPromocion[index];
                      return Container( // Renderizamos las tarjetas
-                       padding: EdgeInsets.all(5),
+                       padding: const EdgeInsets.all(5),
                        decoration: BoxDecoration( // le damos estilo a las tarjetas
                          color: Colors.white,
                          borderRadius: BorderRadius.circular(6), // redondeamos bordes
-                         boxShadow: [
+                         boxShadow: const [
                            BoxShadow( // le damos sombra a la tarjeta
                              color: Color(0x33000000),
                              blurRadius: 30,
@@ -232,14 +234,14 @@ class _PantallaMenuState extends State<PantallaMenu> {
                          children: <Widget>[
                            Expanded(
                              child: Image.asset(
-                               "/imagenes/" + platos.imagen,
+                               "/imagenes/${platos.imagen}",
                                fit: BoxFit.cover,
                                scale: 1,
                              ),
                            ),
-                           SizedBox(height: 8),
+                           const SizedBox(height: 8),
                            if(platos.top)
-                             Row(
+                             const Row(
                                children: <Widget>[
                                  Icon(
                                    Icons.whatshot_rounded, // Cambia el ícono aquí
@@ -248,25 +250,25 @@ class _PantallaMenuState extends State<PantallaMenu> {
                                  )
                                ],
                              ),
-                           SizedBox(width: 5),
+                           const SizedBox(width: 5),
                            Text(
                              platos.nombre,
-                             style: TextStyle(fontWeight: FontWeight.bold),
+                             style: const TextStyle(fontWeight: FontWeight.bold),
                            ),
                            if(platos.promocion)
-                             Align(
+                             const Align(
                                alignment: Alignment(0.9,0),
                                child:
                                Text("Promoción",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red,fontSize: 9),
                                ),
                              ),
                            Padding(
-                             padding: EdgeInsets.only(top: 5),
-                             child: Text("€ " + platos.precio.toString()),
+                             padding: const EdgeInsets.only(top: 5),
+                             child: Text("€ ${platos.precio}"),
                            ),
                            Padding(
-                             padding: EdgeInsets.only(top: 5, bottom: 10),
-                             child: Text(platos.delivery != 0 ? "Delivery: €${platos.delivery}" : "Envío Gratis", style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold,color: Colors.red),),
+                             padding: const EdgeInsets.only(top: 5, bottom: 10),
+                             child: Text(platos.delivery != 0 ? "Delivery: €${platos.delivery}" : "Envío Gratis", style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold,color: Colors.red),),
                            ),
                            Center(
                                child: ElevatedButton( // Acción a realizar cuando se presiona el botón
@@ -283,7 +285,7 @@ class _PantallaMenuState extends State<PantallaMenu> {
                                      );
                                    });
                                  },
-                                 child: Row(
+                                 child: const Row(
                                    mainAxisSize: MainAxisSize.min, // Ajusta el tamaño de la fila al contenido
                                    children: [
                                      Icon(
@@ -304,7 +306,7 @@ class _PantallaMenuState extends State<PantallaMenu> {
                  ),
                ),
                Container( // INICIO PLATOS TOPS
-                 padding: EdgeInsets.all(15),
+                 padding: const EdgeInsets.all(15),
                  child: GridView.builder( // creamos la tarjeta con el metodo Grid
                    itemCount: platosTops.length,
                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -316,11 +318,11 @@ class _PantallaMenuState extends State<PantallaMenu> {
                    itemBuilder: (context, index) {
                      final platos = platosTops[index];
                      return Container( // Renderizamos las tarjetas
-                       padding: EdgeInsets.all(5),
+                       padding: const EdgeInsets.all(5),
                        decoration: BoxDecoration( // le damos estilo a las tarjetas
                          color: Colors.white,
                          borderRadius: BorderRadius.circular(6), // redondeamos bordes
-                         boxShadow: [
+                         boxShadow: const [
                            BoxShadow( // le damos sombra a la tarjeta
                              color: Color(0x33000000),
                              blurRadius: 30,
@@ -333,14 +335,14 @@ class _PantallaMenuState extends State<PantallaMenu> {
                          children: <Widget>[
                            Expanded(
                              child: Image.asset(
-                               "/imagenes/" + platos.imagen,
+                               "/imagenes/${platos.imagen}",
                                fit: BoxFit.cover,
                                scale: 1,
                              ),
                            ),
-                           SizedBox(height: 8),
+                           const SizedBox(height: 8),
                            if(platos.top)
-                             Row(
+                             const Row(
                                children: <Widget>[
                                  Icon(
                                    Icons.whatshot_rounded, // Cambia el ícono aquí
@@ -349,25 +351,25 @@ class _PantallaMenuState extends State<PantallaMenu> {
                                  )
                                ],
                              ),
-                           SizedBox(width: 5),
+                           const SizedBox(width: 5),
                            Text(
                              platos.nombre,
-                             style: TextStyle(fontWeight: FontWeight.bold),
+                             style: const TextStyle(fontWeight: FontWeight.bold),
                            ),
                            if(platos.top)
-                             Align(
+                             const Align(
                                alignment: Alignment(0.9,0),
                                child:
                                Text("Lo más vendido",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red,fontSize: 9),
                                ),
                              ),
                            Padding(
-                             padding: EdgeInsets.only(top: 5),
-                             child: Text("€ " + platos.precio.toString()),
+                             padding: const EdgeInsets.only(top: 5),
+                             child: Text("€ ${platos.precio}"),
                            ),
                            Padding(
-                             padding: EdgeInsets.only(top: 5, bottom: 10),
-                             child: Text(platos.delivery != 0 ? "Delivery: €${platos.delivery}" : "Envío Gratis", style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold,color: Colors.red),),
+                             padding: const EdgeInsets.only(top: 5, bottom: 10),
+                             child: Text(platos.delivery != 0 ? "Delivery: €${platos.delivery}" : "Envío Gratis", style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold,color: Colors.red),),
                            ),
                            Center(
                                child: ElevatedButton( // Acción a realizar cuando se presiona el botón
@@ -384,7 +386,7 @@ class _PantallaMenuState extends State<PantallaMenu> {
                                      );
                                    });
                                  },
-                                 child: Row(
+                                 child: const Row(
                                    mainAxisSize: MainAxisSize.min, // Ajusta el tamaño de la fila al contenido
                                    children: [
                                      Icon(
@@ -412,14 +414,17 @@ class _PantallaMenuState extends State<PantallaMenu> {
   }
 }
 // Componentes del Menu Lateral desplegable
+// ignore: camel_case_types
 class menuLateral extends StatelessWidget{
+  const menuLateral({super.key});
+
 @override
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: Colors.amberAccent , // le damos color al menu desplegable
       child: ListView(
         children: <Widget>[
-          UserAccountsDrawerHeader( // simulamos que un usuario esta registrado
+          const UserAccountsDrawerHeader( // simulamos que un usuario esta registrado
             accountName: Text("Edwin Camacho"),
             accountEmail: Text("edwin.a.camacho@gmail.com"),
             decoration: BoxDecoration(
@@ -427,57 +432,57 @@ class menuLateral extends StatelessWidget{
             ),
           ),
           InkWell(
-            child: new ListTile( // generamos el menu principal
-              title: Text("Mi perfil"),
-              leading: Icon(Icons.account_circle_outlined),
+            child: ListTile( // generamos el menu principal
+              title: const Text("Mi perfil"),
+              leading: const Icon(Icons.account_circle_outlined),
               onTap: (){
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (BuildContext) => Pantallaperfilusuario() // redigimos la pagina al hacer clic
+                    MaterialPageRoute(builder: (BuildContext) => const Pantallaperfilusuario() // redigimos la pagina al hacer clic
                     )
                 );
               },
             ),
           ),
           InkWell(
-            child: new ListTile( // generamos el menu principal
-              title: Text("Categorías"),
-              leading: Icon(Icons.category),
+            child: ListTile( // generamos el menu principal
+              title: const Text("Categorías"),
+              leading: const Icon(Icons.category),
               onTap: (){
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (BuildContext) => PantallaMenu() // redigimos la pagina al hacer clic
+                  MaterialPageRoute(builder: (BuildContext) => const PantallaMenu() // redigimos la pagina al hacer clic
                   )
                 );
               },
             ),
           ),
           InkWell(
-            child: new ListTile(
-              title: Text("Restaurant"),
-              leading: Icon(Icons.home),
+            child: ListTile(
+              title: const Text("Restaurant"),
+              leading: const Icon(Icons.home),
               onTap: (){
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (BuildContext) => PantallaMenu()
+                    MaterialPageRoute(builder: (BuildContext) => const PantallaMenu()
                     )
                 );
               },
             ),
           ),
           InkWell(
-            child: new ListTile(
-              title: Text("Carrito"),
-              leading: Icon(Icons.add_shopping_cart),
+            child: ListTile(
+              title: const Text("Carrito"),
+              leading: const Icon(Icons.add_shopping_cart),
               onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext)=>PantallaCarrito()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext)=>const PantallaCarrito()));
               },
             ),
           ),
           InkWell(
-            child: new ListTile(
-              title: Text("Salir"),
-              leading: Icon(Icons.exit_to_app),
+            child: ListTile(
+              title: const Text("Salir"),
+              leading: const Icon(Icons.exit_to_app),
               onTap: (){
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (BuildContext) => Pantallainicio()
+                    MaterialPageRoute(builder: (BuildContext) => const Pantallainicio()
                     )
                 );
               },

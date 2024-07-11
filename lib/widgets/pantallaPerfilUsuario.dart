@@ -1,7 +1,9 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/Controller/perfil_user.dart';
-import 'package:restaurant/view/pantallaMenu.dart';
+import 'package:restaurant/widgets/pantallaMenu.dart';
 
 class Pantallaperfilusuario extends StatefulWidget {
   const Pantallaperfilusuario({super.key});
@@ -17,11 +19,11 @@ class _PantallaperfilusuarioState extends State<Pantallaperfilusuario> {
       return Scaffold(
           backgroundColor: Colors.amberAccent, // coloreamos la pagina
           appBar: AppBar(
-            title: Text("Perfil Usuario"),
+            title: const Text("Perfil Usuario"),
             elevation: 0,
           ),
-          drawer: menuLateral(),
-          body: usuarios.usuarioCount == 0 ? Center(
+          drawer: const menuLateral(),
+          body: usuarios.usuarioCount == 0 ? const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -30,7 +32,7 @@ class _PantallaperfilusuarioState extends State<Pantallaperfilusuario> {
                 Text("No existen usuarios creados", style: TextStyle(fontSize: 20, color: Colors.black26)),
               ],
             ),
-          ) : SingleChildScrollView(),
+          ) : const SingleChildScrollView(),
       );
     }
     );

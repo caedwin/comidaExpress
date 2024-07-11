@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:restaurant/Controller/usuarios.dart';
 
 class PerfilUser extends ChangeNotifier{
-  Map<String, Usuario> _usuarios = {};
+  final Map<String, Usuario> _usuarios = {};
 
   Map<String, Usuario> get usuarios {
     return {..._usuarios};
