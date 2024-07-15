@@ -31,10 +31,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue
       ),
-      // home: Pantallainicio() // pantalla inicio
-      home: PantallaMenu(),
+      // home: const Pantallainicio() // pantalla inicio
+      home: const PantallaMenu(),
       // home: const loginUser(),
     );
   }
 }
+
 

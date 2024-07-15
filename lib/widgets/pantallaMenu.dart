@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/Controller/carrito.dart';
@@ -14,9 +15,19 @@ class PantallaMenu extends StatefulWidget {
   State<PantallaMenu> createState() => _PantallaMenuState();
 }
 
+
+
 //Encabezado de la página
 class _PantallaMenuState extends State<PantallaMenu> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+  List<bool> _isSelected = [];
+  List<Platos> plato = [];
+  @override
+  void initState() {
+    super.initState();
+    _isSelected = List.generate(platos.length, (index) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     final platosEnPromocion = platos.where((plato) => plato.promocion).toList();
@@ -27,8 +38,8 @@ class _PantallaMenuState extends State<PantallaMenu> {
        length: 3,
        child: Scaffold(
          key: _globalKey,
-         backgroundColor: Colors.amberAccent,
-         // pintamos el body de la pagina
+         backgroundColor: Colors.amberAccent ,
+         // pintamos el body de la página
          appBar: AppBar( // creamos las pestañas de navegacion
            title: const Text("Comida Express", style: TextStyle(
                fontWeight: FontWeight.bold, color: Colors.blue)),
@@ -43,19 +54,22 @@ class _PantallaMenuState extends State<PantallaMenu> {
                Tab(
                  child: Padding( // creamos el nombre en la pestaña
                    padding: EdgeInsets.only(left: 5, right: 5),
-                   child: Text("Menú",style: TextStyle(fontSize: 12),),
+                   child: Text("Menú",style: TextStyle(fontSize: 12),
+                   ),
                  ),
                ),
                Tab(
                  child: Padding(
                    padding: EdgeInsets.only(left: 5, right: 5),
-                   child: Text("Promociones",style: TextStyle(fontSize: 12),),
+                   child: Text("Promociones",style: TextStyle(fontSize: 12),
+                   ),
                  ),
                ),
                Tab(
                  child: Padding(
                    padding: EdgeInsets.only(left: 5, right: 5),
-                   child: Text("Recomendado",style: TextStyle(fontSize: 12),),
+                   child: Text("Recomendado",style: TextStyle(fontSize: 12),
+                   ),
                  ),
                )
              ],
@@ -67,10 +81,15 @@ class _PantallaMenuState extends State<PantallaMenu> {
                      icon: const Icon(Icons.shopping_cart), // icono
                      padding: const EdgeInsets.only(right: 18, top: 10),
                      onPressed: () {
-                       carrito.itemCount !=0 ? Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext)=>const PantallaCarrito())):
-                       ScaffoldMessenger.of(context).showSnackBar(
+                       carrito.itemCount !=0
+                           ? Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext)=>const PantallaCarrito()))
+                           : ScaffoldMessenger.of(context).showSnackBar(
                            const SnackBar(
-                               content: Text("Tu carrito está vacío 🥺!!", textAlign: TextAlign.center,)
+                               content: Text(
+                                 "Tu carrito está vacío 🥺!!",
+                                 textAlign: TextAlign.center,
+                               )
                            )
                        );
                      }
@@ -92,8 +111,8 @@ class _PantallaMenuState extends State<PantallaMenu> {
                        textAlign: TextAlign.center,
                        style: const TextStyle(
                            color: Colors.white,
-                           fontSize: 9
-                       ),),
+                           fontSize: 9),
+                     ),
                    ),
                  )
                ],
@@ -104,76 +123,126 @@ class _PantallaMenuState extends State<PantallaMenu> {
          body: TabBarView(
            children: <Widget>[
              // Creamos las tarjetas en cada apartado de las pestañas
-               Container( // Pestaña MENU
-                 padding: const EdgeInsets.all(15),
-                 child: GridView.builder( // creamos la tarjeta con el metodo Grid
-                   itemCount: platos.length,
-                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                     crossAxisCount: 2, // cantidad de columnas
-                     childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.1), // manejamos el tamaño de la tarjeta
-                     crossAxisSpacing: 10, // separacion horizontal
-                     mainAxisSpacing: 10,  // separacion vertical
-                   ),
-                   itemBuilder: (context, index) {
-                     return Container( // Renderizamos las tarjetas
+              // Pestaña MENU
+             Container(
+               padding: const EdgeInsets.all(15),
+               child: GridView.builder(
+                 itemCount: platos.length,
+                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                   crossAxisCount: 2, // cantidad de columnas
+                   childAspectRatio: MediaQuery.of(context).size.width /
+                       (MediaQuery.of(context).size.height / 1.1), // manejamos el tamaño de la tarjeta
+                   crossAxisSpacing: 10, // separación horizontal
+                   mainAxisSpacing: 10, // separación vertical
+                 ),
+                 itemBuilder: (context, index) {
+                   var producto = [platos[index].id];
+                   // bool enCarrito = Provider.of<Carrito>(context).items.containsKey(producto.id);
+                   bool enCarrito = Provider.of<Carrito>(context).itemCount.toDouble() > 0;
+                   return GestureDetector(
+                     onTap: () {
+                       // Si el producto no está en el carrito, cambiar el estado de selección.
+                       if (!enCarrito) {
+                         setState(() {
+                           _isSelected[index] = !_isSelected[index];
+                           Provider.of<Carrito>(context, listen: false).agregarItem(
+                             platos[index].id.toString(),
+                             platos[index].nombre,
+                             platos[index].precio,
+                             "1",
+                             platos[index].imagen,
+                             1,
+                             platos[index].delivery,
+                           );
+                         });
+                       }
+                     },
+                     child: Container(
                        padding: const EdgeInsets.all(5),
-                       decoration: BoxDecoration( // le damos estilo a las tarjetas
+                       decoration: BoxDecoration(
+                         border: Border.all(
+                           color: enCarrito ? Colors.red : Colors.transparent, // borde rojo si el producto está en el carrito
+                           width: 3.0,
+                         ),
                          color: Colors.white,
-                         borderRadius: BorderRadius.circular(6), // redondeamos bordes
+                         borderRadius: BorderRadius.circular(5),
                          boxShadow: const [
-                           BoxShadow( // le damos sombra a la tarjeta
+                           BoxShadow(
                              color: Color(0x33000000),
                              blurRadius: 30,
                              offset: Offset(10, 10),
                            ),
                          ],
                        ),
-                       child: Column( // mostramos los registros en el contenido de las tarjetas
+                       child: Column(
                          crossAxisAlignment: CrossAxisAlignment.start,
                          children: <Widget>[
                            Expanded(
                              child: Image.asset(
                                "/imagenes/${platos[index].imagen}",
                                fit: BoxFit.cover,
-                               scale: 1,
+                               scale: 2,
                              ),
                            ),
                            const SizedBox(height: 8),
-                           if(platos[index].top)
+                           if (platos[index].top)
                              const Row(
                                children: <Widget>[
                                  Icon(
-                                   Icons.whatshot_rounded, // Cambia el ícono aquí
-                                   color: Colors.deepOrangeAccent, // Cambia el color del ícono
-                                   size: 16, // Tamaño del ícono
+                                   Icons.whatshot_rounded,
+                                   color: Colors.deepOrangeAccent,
+                                   size: 16,
                                  )
                                ],
                              ),
-                           const SizedBox(width: 5), // Espacio entre el ícono y el texto
+                           const SizedBox(width: 5),
                            Text(
                              platos[index].nombre,
-                             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12,),
+                             style: const TextStyle(
+                               fontWeight: FontWeight.bold,
+                               fontSize: 12,
+                             ),
                            ),
-                           if(platos[index].promocion)
+                           if (platos[index].promocion)
                              const Align(
-                               alignment: Alignment(0.9,0),
-                               child: Text("Promoción",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red,fontSize: 9),
+                               alignment: Alignment(0.9, 0),
+                               child: Text(
+                                 "Promoción",
+                                 style: TextStyle(
+                                   fontWeight: FontWeight.bold,
+                                   color: Colors.red,
+                                   fontSize: 9,
+                                 ),
                                ),
                              ),
                            Padding(
                              padding: const EdgeInsets.only(top: 5),
-                             child: Text("€ ${platos[index].precio}", style: const TextStyle(fontSize: 12),),
+                             child: Text(
+                               "€ ${platos[index].precio}",
+                               style: const TextStyle(fontSize: 12),
+                             ),
                            ),
                            Padding(
-                               padding: const EdgeInsets.only(top: 5, bottom: 10),
-                                child: Text(platos[index].delivery != 0 ? "Delivery: €${platos[index].delivery}" : "Envío Gratis", style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold,color: Colors.red),),
+                             padding: const EdgeInsets.only(top: 5, bottom: 10),
+                             child: Text(
+                               platos[index].delivery != 0
+                                   ? "Delivery: €${platos[index].delivery}"
+                                   : "Envío Gratis",
+                               style: const TextStyle(
+                                 fontSize: 9,
+                                 fontWeight: FontWeight.bold,
+                                 color: Colors.red,
+                               ),
+                             ),
                            ),
-
                            Center(
-                             child: ElevatedButton( // Acción a realizar cuando se presiona el botón
-                             onPressed: () {
-                               setState(() {
-                                 carrito.agregarItem(
+                             child: ElevatedButton(
+                               onPressed: enCarrito
+                                   ? null
+                                   : () {
+                                 setState(() {
+                                   _isSelected[index] = !_isSelected[index];
+                                   Provider.of<Carrito>(context, listen: false).agregarItem(
                                      platos[index].id.toString(),
                                      platos[index].nombre,
                                      platos[index].precio,
@@ -181,29 +250,37 @@ class _PantallaMenuState extends State<PantallaMenu> {
                                      platos[index].imagen,
                                      1,
                                      platos[index].delivery,
-                                 );
-                               });
-                             },
-                             child: const Row(
-                                mainAxisSize: MainAxisSize.min, // Ajusta el tamaño de la fila al contenido
-                                children: [
-                                    Icon(
-                                    Icons.shopping_cart, // El icono que quieres mostrar
-                                    color: Colors.red,
-                                    size: 14,
-                                    ),// Color del icono
-                                    SizedBox(width: 8), // Espacio entre el icono y el texto
-                                    Text("Agregar", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red,fontSize: 10),)
-                                ],
+                                   );
+                                 });
+                               },
+                               child: const Row(
+                                 mainAxisSize: MainAxisSize.min,
+                                 children: [
+                                   Icon(
+                                     Icons.shopping_cart,
+                                     color: Colors.red,
+                                     size: 14,
+                                   ),
+                                   SizedBox(width: 8),
+                                   Text(
+                                     "Agregar",
+                                     style: TextStyle(
+                                       fontWeight: FontWeight.bold,
+                                       color: Colors.red,
+                                       fontSize: 10,
+                                     ),
+                                   )
+                                 ],
+                               ),
                              ),
-                           )
                            ),
-                        ],
-                       )
-                     );
-                   },
-                 ),
+                         ],
+                       ),
+                     ),
+                   );
+                 },
                ),
+             ),
                Container( // INICIO Prestaña PROMOCIONES
                  padding: const EdgeInsets.all(15),
                  child: GridView.builder( // creamos la tarjeta con el metodo Grid
@@ -219,6 +296,10 @@ class _PantallaMenuState extends State<PantallaMenu> {
                      return Container( // Renderizamos las tarjetas
                        padding: const EdgeInsets.all(5),
                        decoration: BoxDecoration( // le damos estilo a las tarjetas
+                         border: Border.all(
+                           color: _isSelected[index] ? Colors.red : Colors.transparent,
+                           width: 3.0,
+                         ),
                          color: Colors.white,
                          borderRadius: BorderRadius.circular(6), // redondeamos bordes
                          boxShadow: const [
@@ -272,8 +353,9 @@ class _PantallaMenuState extends State<PantallaMenu> {
                            ),
                            Center(
                                child: ElevatedButton( // Acción a realizar cuando se presiona el botón
-                                 onPressed: () {
+                                 onPressed: _isSelected[index] ? null : () {
                                    setState(() {
+                                     _isSelected[index] = !_isSelected[index];
                                      carrito.agregarItem(
                                          platos.id.toString(),
                                          platos.nombre,
@@ -294,11 +376,12 @@ class _PantallaMenuState extends State<PantallaMenu> {
                                        size: 14,
                                      ),// Color del icono
                                      SizedBox(width: 8), // Espacio entre el icono y el texto
-                                     Text("Agregar", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red,fontSize: 10),)
+                                     Text("Agregar", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red,fontSize: 10),
+                                     )
                                    ],
                                  ),
-                               )
-                           )
+                               ),
+                           ),
                          ],
                        ),
                      );
@@ -320,6 +403,10 @@ class _PantallaMenuState extends State<PantallaMenu> {
                      return Container( // Renderizamos las tarjetas
                        padding: const EdgeInsets.all(5),
                        decoration: BoxDecoration( // le damos estilo a las tarjetas
+                         border: Border.all(
+                           color: _isSelected[index] ? Colors.red : Colors.transparent,
+                           width: 3.0,
+                         ),
                          color: Colors.white,
                          borderRadius: BorderRadius.circular(6), // redondeamos bordes
                          boxShadow: const [
@@ -373,8 +460,9 @@ class _PantallaMenuState extends State<PantallaMenu> {
                            ),
                            Center(
                                child: ElevatedButton( // Acción a realizar cuando se presiona el botón
-                                 onPressed: () {
+                                 onPressed: _isSelected[index] ? null : () {
                                    setState(() {
+                                     _isSelected[index] = !_isSelected[index];
                                      carrito.agregarItem(
                                          platos.id.toString(),
                                          platos.nombre,
@@ -395,11 +483,12 @@ class _PantallaMenuState extends State<PantallaMenu> {
                                        size: 14,
                                      ),// Color del icono
                                      SizedBox(width: 8), // Espacio entre el icono y el texto
-                                     Text("Agregar", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red,fontSize: 10),)
+                                     Text("Agregar", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red,fontSize: 10),
+                                     )
                                    ],
                                  ),
                                )
-                           )
+                           ),
                          ],
                        ),
                      );
@@ -408,7 +497,7 @@ class _PantallaMenuState extends State<PantallaMenu> {
                ),
              ],
            ),
-         )
+         ),
      );
    });
   }

@@ -3,6 +3,7 @@ import 'package:restaurant/Controller/Item.dart';
 
 class Carrito extends ChangeNotifier {
   Map<String, Item> _items = {};
+  int _counter = 0;
 
   Map<String, Item> get items {
     return {..._items};
@@ -11,6 +12,8 @@ class Carrito extends ChangeNotifier {
   int get itemCount {
     return _items.length;
   }
+
+  int get counter => _counter;
 
   double get subTotal {
     var total = 0.0;
@@ -35,6 +38,7 @@ class Carrito extends ChangeNotifier {
 
   void agregarItem(String productoId, String nombre, double precio, String unidad, String imagen, int cantidad, double delivery) {
     if (_items.containsKey(productoId)) {
+      counter == 1;
       _items.update(
         productoId,
             (existingItem) => Item(
@@ -87,9 +91,8 @@ class Carrito extends ChangeNotifier {
     }
   }
 
-  void disminuirCantidadItem(String productoId) {
-    if (!_items.containsKey(productoId)) return;
-    if (_items[productoId]!.cantidad > 1) {
+  bool disminuirCantidadItem(String productoId) {
+    if (_items.containsKey(productoId) && _items[productoId]!.cantidad > 1) {
       _items.update(
         productoId,
             (existingItem) => Item(
@@ -100,16 +103,25 @@ class Carrito extends ChangeNotifier {
           imagen: existingItem.imagen,
           cantidad: existingItem.cantidad - 1,
           delivery: existingItem.delivery,
-        ),
-      );
-    } else {
+        ));
+      notifyListeners();
+      return false;
+    } else if (_items.containsKey(productoId)) {
       _items.remove(productoId);
+      notifyListeners();
+      return true;
     }
-    notifyListeners();
+    return false; // Si el item no está en el carrito, devuelve false
   }
 
   void limpiarCarrito() {
     _items = {};
     notifyListeners();
   }
+
+  void increment(){
+    _counter++;
+    notifyListeners();
+  }
+
 }

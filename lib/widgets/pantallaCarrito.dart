@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/Controller/carrito.dart';
-// import 'package:restaurant/Controller/productos.dart';
+import 'package:restaurant/Controller/productos.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PantallaCarrito extends StatefulWidget {
@@ -31,6 +31,7 @@ class _PantallaCarritoState extends State<PantallaCarrito> {
               Icon(Icons.shopping_cart, size: 60,color: Colors.white30,),
               SizedBox(height: 10),
               Text("Tu carrito está vacío", style: TextStyle(fontSize: 20, color: Colors.black26)),
+
             ],
           ),
         ) :
@@ -81,7 +82,7 @@ class _PantallaCarritoState extends State<PantallaCarrito> {
                                       ),
                                       onPressed: () {
                                         setState(() {
-                                          carrito.disminuirCantidadItem(item.id);
+                                         carrito.disminuirCantidadItem(item.id);
                                         });
                                       },
                                     ),
@@ -135,7 +136,6 @@ class _PantallaCarritoState extends State<PantallaCarrito> {
                 color: Colors.black38,
                 height: 20.0,
               ),
-
               const Padding(
                 padding: EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 0),
                 child: Align(
